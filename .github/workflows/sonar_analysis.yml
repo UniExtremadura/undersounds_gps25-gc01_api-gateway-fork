@@ -1,11 +1,10 @@
 name: SonarCloud Analysis
 
 on:
-  # Dispara el flujo de trabajo en cada 'push' a la rama principal
+  # Dispara en cada push a la rama principal (Asegúrate de que 'master' sea tu rama principal)
   push:
     branches:
-      - master  # ⚠️ REVISA: Si tu rama es 'main', cámbialo a 'main'
-  # También se ejecuta en la creación o actualización de Pull Requests
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -24,17 +23,9 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
-          cache: gradle 
+          cache: gradle
           
-      # 2. Caché para el escáner (Opción)
-      - name: Cache SonarCloud Scanner
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-          
-      # 3. Ejecutar el análisis con Gradle
+      # 2. Ejecutar el análisis con Gradle
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
